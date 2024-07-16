@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "586176015976",
+    "project_id": "roommatefinder-aa459",
+    "storage_bucket": "roommatefinder-aa459.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:586176015976:android:bbb55ea77a72b8b5be15dd",
+        "android_client_info": {
+          "package_name": "uk.ac.tees.mad.d3614099"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7vycLVbSXMSFTfJQ2jx10vBrQxpYYGdM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
