@@ -84,11 +84,6 @@ fun ProfileScreen(
 
     val userPreferences = UserPreferences(context)
 
-    //Load username from shared preferences
-    var userName by remember {
-        mutableStateOf(userPreferences.getUserName())
-    }
-
     var profileImageUri by remember {
         mutableStateOf<Uri?>(null)
     }
@@ -139,13 +134,9 @@ fun ProfileScreen(
                 Text(
                     text = "Profile",
                     style = MaterialTheme.typography.headlineMedium,
-                    fontSize = 30.sp,
+                    fontSize = 26.sp,
                     fontWeight = FontWeight.Bold
                 )
-                Spacer(modifier = Modifier.weight(1f))
-                IconButton(onClick = { }) {
-                    Icon(Icons.Filled.Edit, contentDescription = "Change profile picture")
-                }
             }
 
             Row(
@@ -204,33 +195,24 @@ fun ProfileScreen(
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold
                     )
-//                    TextField(
-//                        value = userName,
-//                        onValueChange = { newName ->
-//                            userName = newName
-//                        },
-//                        label = { Text("User Name") }
-//                    )
                     Row {
-
-
-                        Text(
-                            text = userProfile.gender,
-                            style = MaterialTheme.typography.bodyMedium,
-                            fontWeight = FontWeight.Light
-                        )
                         Spacer(modifier = Modifier.weight(0.5f))
                         Icon(
                             imageVector = Icons.Filled.LocationOn,
                             contentDescription = null
                         )
                         Text(
-                            text = location ?: "London, UK",
+                            text = location ?: "No location set",
                             style = MaterialTheme.typography.bodyMedium,
                             fontSize = 18.sp,
                             fontWeight = FontWeight.SemiBold
                         )
                     }
+                    Text(
+                        text = userProfile.gender,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.SemiBold
+                    )
                 }
             }
 
@@ -248,26 +230,14 @@ fun ProfileScreen(
 
                 ProfileInfoCard(
                     icon = Icons.Filled.PostAdd,
-                    text = "Posts",
+                    text = "Add Post",
                     onClick = {
                         ScreenRouter.navigateTo(Screen.PostScreen)
                     }
                 )
-                Spacer(modifier = Modifier.height(30.dp))
-
-                ProfileInfoCard(
-                    icon = Icons.Filled.Language,
-                    text = "Language"
-                )
-                Spacer(modifier = Modifier.height(30.dp))
-
-                ProfileInfoCard(
-                    icon = Icons.Filled.DarkMode,
-                    text = "Switch Theme"
-                )
             }
 
-            Spacer(modifier = Modifier.height(50.dp))
+            Spacer(modifier = Modifier.height(30.dp))
 
             Button(
                 onClick = {
@@ -284,14 +254,3 @@ fun ProfileScreen(
         ScreenRouter.navigateTo(Screen.HomeScreen)
     }
 }
-
-//@Preview(showBackground = true, showSystemUi = true)
-//@Composable
-//fun ProfileScreenPreview() {
-//    ProfileScreen(
-//        userProfile = ProfileData(
-//            name = "John Doe",
-//            profileImage = 0
-//        )
-//    )
-//}
