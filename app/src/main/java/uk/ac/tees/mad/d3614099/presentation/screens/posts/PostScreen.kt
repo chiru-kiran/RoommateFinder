@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -28,12 +30,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -61,7 +67,7 @@ import uk.ac.tees.mad.d3614099.presentation.common.MyTextFieldComponent3
 import uk.ac.tees.mad.d3614099.presentation.common.MyTextFieldComponentNumerical
 import uk.ac.tees.mad.d3614099.ui.theme.RoommateFinderTheme
 
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun PostScreen(
     postViewModel: PostViewModel = viewModel()
@@ -92,29 +98,16 @@ fun PostScreen(
         }
     )
 
-    Box(
+    Scaffold(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        contentAlignment = Alignment.Center
-    ) {
-        Surface(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
-                .padding(16.dp)
-        ) {
-
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+            .background(MaterialTheme.colorScheme.background),
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(text = "Room Information")
+                },
+                navigationIcon = {
                     IconButton(onClick = {
                         ScreenRouter.navigateTo(Screen.ProfileScreen)
                     }) {
@@ -123,29 +116,33 @@ fun PostScreen(
                             contentDescription = ""
                         )
                     }
-                    Text(
-                        text = "Room Information",
-                        style = MaterialTheme.typography.headlineMedium,
-                        fontSize = 30.sp,
-                        fontWeight = FontWeight.Bold
-                    )
                 }
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-
-//                Text(text = "Upload Images", fontSize = 20.sp)
-//                Spacer(modifier = Modifier.height(8.dp))
-
-                Button(onClick = {
-                    multiplePhotoPicker.launch(
-                        PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-                    )
-                }) {
+            )
+        }
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(it)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                OutlinedButton(
+                    onClick = {
+                        multiplePhotoPicker.launch(
+                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                        )
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     Text("Pick Images")
                 }
 
-                LazyRow {
+                LazyRow(contentPadding = PaddingValues(6.dp)) {
                     items(imageUris) { uri ->
                         AsyncImage(
                             model = uri,
@@ -153,13 +150,10 @@ fun PostScreen(
                             contentScale = ContentScale.Crop,
                             modifier = Modifier
                                 .size(150.dp)
-                                .padding(8.dp)
                                 .clip(RoundedCornerShape(24.dp))
                         )
                     }
                 }
-
-                Spacer(modifier = Modifier.height(20.dp))
 
                 MyTextFieldComponent2(
                     labelValue = "Owner Name",
@@ -167,29 +161,33 @@ fun PostScreen(
                         postViewModel.onEvent(PostUiEvents.NameChange(it))
                     }
                 )
-                MyTextFieldComponent2(
-                    labelValue = "Gender",
-                    onTextChanged = {
-                        postViewModel.onEvent(PostUiEvents.GenderChange(it))
-                    }
-                )
 
                 Spacer(modifier = Modifier.height(6.dp))
-
-                MyTextFieldComponentNumerical(
-                    labelValue = "Owner Phone No",
-                    onTextChanged = {
-                        postViewModel.onEvent(PostUiEvents.PhoneChange(it))
-                    })
-
+                Row(Modifier.fillMaxWidth()) {
+                    MyTextFieldComponent2(
+                        labelValue = "Gender",
+                        onTextChanged = {
+                            postViewModel.onEvent(PostUiEvents.GenderChange(it))
+                        },
+                        modifier = Modifier.weight(1f)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    MyTextFieldComponentNumerical(
+                        labelValue = "Owner Phone No",
+                        onTextChanged = {
+                            postViewModel.onEvent(PostUiEvents.PhoneChange(it))
+                        },
+                        modifier = Modifier.weight(1f)
+                    )
+                }
                 Spacer(modifier = Modifier.height(6.dp))
-
                 MyTextFieldComponent2(
                     labelValue = "Title",
                     onTextChanged = {
                         postViewModel.onEvent(PostUiEvents.TitleChange(it))
                     }
                 )
+
 
                 Spacer(modifier = Modifier.height(6.dp))
 
@@ -209,25 +207,29 @@ fun PostScreen(
                     })
 
                 Spacer(modifier = Modifier.height(6.dp))
+                Row {
 
-                MyTextFieldComponent2(
-                    labelValue = "Duration",
-                    onTextChanged = {
-                        postViewModel.onEvent(PostUiEvents.DurationChange(it))
-                    })
+                    MyTextFieldComponent2(
+                        labelValue = "Duration",
+                        onTextChanged = {
+                            postViewModel.onEvent(PostUiEvents.DurationChange(it))
+                        },
+                        modifier = Modifier.weight(1f)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
 
-                Spacer(modifier = Modifier.height(6.dp))
+                    MyTextFieldComponentNumerical(
+                        labelValue = "Price",
+                        onTextChanged = {
+                            postViewModel.onEvent(PostUiEvents.PriceChange(it))
+                        },
+                        modifier = Modifier.weight(1f)
+                    )
+                }
 
-                MyTextFieldComponentNumerical(
-                    labelValue = "Price",
-                    onTextChanged = {
-                        postViewModel.onEvent(PostUiEvents.PriceChange(it))
-                    }
-                )
 
-                Spacer(modifier = Modifier.height(6.dp))
 
-//                val selectedOptions = remember { mutableStateListOf<String>() }
+                Spacer(modifier = Modifier.height(16.dp))
 
                 Column(
                     verticalArrangement = Arrangement.Center,
@@ -276,38 +278,20 @@ fun PostScreen(
                     },
                 )
             }
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .size(300.dp),
-                contentAlignment = Alignment.Center,
-            ) {
-                if (postViewModel.postInProgress.value) {
-                    CircularProgressIndicator()
-                }
+        }
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .size(300.dp),
+            contentAlignment = Alignment.Center,
+        ) {
+            if (postViewModel.postInProgress.value) {
+                CircularProgressIndicator()
             }
         }
     }
+
     SystemBackButtonHandler {
         ScreenRouter.navigateTo(Screen.ProfileScreen)
-    }
-
-//    Box(
-//        modifier = Modifier.fillMaxSize(),
-//        contentAlignment = Alignment.Center
-//    ) {
-//        if (postViewModel.postInProgress.value) {
-//            CircularProgressIndicator()
-//        }
-//    }
-}
-
-@Preview
-@Composable
-fun PostScreenPreview() {
-    RoommateFinderTheme {
-        PostScreen(
-            postViewModel = PostViewModel()
-        )
     }
 }

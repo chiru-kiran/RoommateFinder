@@ -139,7 +139,8 @@ fun MyTextFieldComponent(
 fun MyTextFieldComponent2(
     labelValue: String,
 //    painterResource: Painter,
-    onTextChanged: (String) -> Unit
+    onTextChanged: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
 
     val textValue = remember {
@@ -148,7 +149,7 @@ fun MyTextFieldComponent2(
     val localFocusManager = LocalFocusManager.current
 
     OutlinedTextField(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clip(componentShape.small),
         label = { Text(text = labelValue) },
@@ -181,7 +182,8 @@ fun MyTextFieldComponent2(
 fun MyTextFieldComponentNumerical(
     labelValue: String,
 //    painterResource: Painter,
-    onTextChanged: (String) -> Unit
+    onTextChanged: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
 
     val textValue = remember {
@@ -190,7 +192,7 @@ fun MyTextFieldComponentNumerical(
     val localFocusManager = LocalFocusManager.current
 
     OutlinedTextField(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clip(componentShape.small),
         label = { Text(text = labelValue) },

@@ -196,11 +196,11 @@ fun ProfileScreen(
                         fontWeight = FontWeight.Bold
                     )
                     Row {
-                        Spacer(modifier = Modifier.weight(0.5f))
                         Icon(
                             imageVector = Icons.Filled.LocationOn,
                             contentDescription = null
                         )
+                        Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = location ?: "No location set",
                             style = MaterialTheme.typography.bodyMedium,
@@ -208,11 +208,20 @@ fun ProfileScreen(
                             fontWeight = FontWeight.SemiBold
                         )
                     }
-                    Text(
-                        text = userProfile.gender,
-                        style = MaterialTheme.typography.bodyMedium,
-                        fontWeight = FontWeight.SemiBold
-                    )
+                    Row {
+                        Icon(
+                            imageVector = Icons.Filled.Person,
+                            contentDescription = null
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = userProfile.gender,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            fontSize = 18.sp,
+                        )
+                    }
+
                 }
             }
 
