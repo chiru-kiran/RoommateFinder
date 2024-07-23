@@ -2,6 +2,8 @@ package uk.ac.tees.mad.d3614099.navigation
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
 import uk.ac.tees.mad.d3614099.presentation.screens.home.RoomData
 
 sealed class Screen(val route: String) {
@@ -19,8 +21,11 @@ sealed class Screen(val route: String) {
 }
 
 object ScreenRouter {
+    private val firebaseAuth = Firebase.auth
+    var currentScreen: MutableState<Screen> =
+        if (firebaseAuth.currentUser?.uid == null) mutableStateOf(Screen.Login) else
+            mutableStateOf(Screen.HomeScreen)
 
-    var currentScreen: MutableState<Screen> = mutableStateOf(Screen.Login)
     fun navigateTo(destination: Screen) {
         currentScreen.value = destination
     }
