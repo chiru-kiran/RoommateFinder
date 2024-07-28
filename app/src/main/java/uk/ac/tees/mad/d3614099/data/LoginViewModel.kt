@@ -13,7 +13,7 @@ import uk.ac.tees.mad.d3614099.data.rules.Validator
 import uk.ac.tees.mad.d3614099.navigation.Screen
 import uk.ac.tees.mad.d3614099.navigation.ScreenRouter
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel: ViewModel() {
     private val TAG = SignupViewModel::class.simpleName
 
     private val viewModelScope = CoroutineScope(Dispatchers.Main)
